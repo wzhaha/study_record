@@ -239,3 +239,20 @@ resultMap 和 resultType，不能同时使用，用于指定返回类型。
     </resultMap>
     ```
     相当于java中的switch case
+ 
++ 缓存 
+    - cache
+      缓存会使用最近最少使用算法（LRU, Least Recently Used）算法来清除不需要的缓存。
+      ```
+      <cache
+        eviction="FIFO"
+        flushInterval="60000"
+        size="512"
+        readOnly="true"/>
+      ```
+      eviction默认为LRU算法
+    - cache-ref
+    ```
+    <cache-ref namespace="com.someone.application.data.SomeMapper"/>
+    ```
+    如果想要在多个命名空间中共享相同的缓存配置和实例，可以使用 cache-ref 元素来引用另一个缓存
