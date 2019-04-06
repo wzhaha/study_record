@@ -1,0 +1,19 @@
+springboot学习记录：
+
+1.为什么用springboot？
+   （1）快速整合第三方框架，简化xml配置采用注解
+   （2）内置tomcat服务器（http服务器）或者jetty服务器
+   （3）传统框架配置太多，jar包冲突
+   （4）springboot底层实现了版本统一——maven继承原理
+	
+2.springboot，springcloud与springboot的关系
+	springcloud：注册中心，客户端调用工具，网关，链路，服务追踪，负载均衡，分布式配置中心，断路器···
+	(1)springboot 是一个快速开发的框架，能快速整合第三方框剪，简化XML配置，全部采用注解形式，内置web服务，帮助开发者实现快速开发，springboot web控制层框架默认集成springmvc。
+	（2）springcloud是一套完整微服务解决框架，在微服务领域通讯协议http+json格式，springcloud依赖springboot框架，springcloud使用使用springmvc书写http协议接口。
+	   
+	总结：1.如果需要做微服务，需要springcloud整合springboot；
+		   2.如果项目只使用springboot，可能不需要实现微服务。
+		   3. springboot不是微服务框架
+
+    springboot与springmvc的关系：springboot web组件集成springmvc框架。
+
