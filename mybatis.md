@@ -257,7 +257,7 @@ resultMap 和 resultType，不能同时使用，用于指定返回类型。
     ```
     如果想要在多个命名空间中共享相同的缓存配置和实例，可以使用 cache-ref 元素来引用另一个缓存
     
-#### 动态SQL
+#### 四.动态SQL
 + if
     ```
     <select id="findActiveBlogLike"
