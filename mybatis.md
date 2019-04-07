@@ -1,4 +1,5 @@
 # mybatis学习记录
+![Image text](https://github.com/wzhaha/study_record/blob/master/images/mybatis.jpeg)
 #### 一. 配置
 ```
 依赖注入
