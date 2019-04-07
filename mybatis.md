@@ -256,3 +256,90 @@ resultMap 和 resultType，不能同时使用，用于指定返回类型。
     <cache-ref namespace="com.someone.application.data.SomeMapper"/>
     ```
     如果想要在多个命名空间中共享相同的缓存配置和实例，可以使用 cache-ref 元素来引用另一个缓存
+    
+#### 动态SQL
++ if
+    ```
+    <select id="findActiveBlogLike"
+         resultType="Blog">
+      SELECT * FROM BLOG WHERE state = ‘ACTIVE’
+      <if test="title != null">
+        AND title like #{title}
+      </if>
+      <if test="author != null and author.name != null">
+        AND author_name like #{author.name}
+      </if>
+    </select>
+    ```
++ choose (when, otherwise)
+    ```
+    <select id="findActiveBlogLike"
+         resultType="Blog">
+      SELECT * FROM BLOG WHERE state = ‘ACTIVE’
+      <choose>
+        <when test="title != null">
+          AND title like #{title}
+        </when>
+        <when test="author != null and author.name != null">
+          AND author_name like #{author.name}
+        </when>
+        <otherwise>
+          AND featured = 1
+        </otherwise>
+      </choose>
+    </select>
+    ```
+    适用于选择使用单条件查询
++ trim (where, set)
+    - where
+    ```
+    <select id="findActiveBlogLike"
+         resultType="Blog">
+      SELECT * FROM BLOG
+      <where>
+        <if test="state != null">
+             state = #{state}
+        </if>
+        <if test="title != null">
+            AND title like #{title}
+        </if>
+        <if test="author != null and author.name != null">
+            AND author_name like #{author.name}
+        </if>
+      </where>
+    </select>
+    ```
+    等价于
+    ```
+    <trim prefix="WHERE" prefixOverrides="AND |OR ">
+      ...
+    </trim>
+    ```
+    使用自带的标签会自动过滤一些无关的符号
++ foreach
+    ```
+    <select id="selectPostIn" resultType="domain.blog.Post">
+      SELECT *
+      FROM POST P
+      WHERE ID in
+      <foreach item="item" index="index" collection="list"
+          open="(" separator="," close=")">
+            #{item}
+      </foreach>
+    </select>
+    ```
+    
++ 多数据库支持
+    ```
+    <insert id="insert">
+      <selectKey keyProperty="id" resultType="int" order="BEFORE">
+        <if test="_databaseId == 'oracle'">
+          select seq_users.nextval from dual
+        </if>
+        <if test="_databaseId == 'db2'">
+          select nextval for seq_users from sysibm.sysdummy1"
+        </if>
+      </selectKey>
+      insert into users values (#{id}, #{name})
+    </insert>
+    ```
