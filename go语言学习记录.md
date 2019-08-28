@@ -253,8 +253,9 @@
 	```
 	
 ## 接口(interface)
+1. example
 
-	
+	```
 	package main
 	
 	import (
@@ -289,4 +290,56 @@
 	    phone.call()
 	
 	}
+	```
 	
+2. 多态的实现(方法接受参数是一个接口类型，多个结构体实现了接口)
+
+## 错误处理
+1. example
+	**golang的错误处理流程：当一个函数在执行过程中出现了异常或遇到	panic()，正常语句就会立即终止，然后执行defer语句，再报告异常信息，最后退出 goroutine。如果在defer中使用了recover() 函数,则会捕获错误信息，使该错误信息终止报告**
+
+	```
+	func testError(divide int) (int){
+
+		defer func() {
+			err := recover()
+			if  err != nil {
+				//说明捕获到异常
+				log.Println("err=",err)
+			}
+		}()
+	
+		if divide == 0{
+			panic("param is 0")
+		}
+		return 100/divide
+	}
+	```
+	
+## 并发
+1. 通道channel,通道可用于两个 goroutine 之间通过传递一个指定类型的值来同步运行和通讯
+
+	```
+	<!--传递数据到通道c-->
+	func sum(s []int, c chan int) {
+		sum := 0
+		for _, v := range s {
+			sum += v
+		}
+		c <- sum // 把 sum 发送到通道 c
+	}
+	
+	func main() {
+		s := []int{7, 2, 8, -9, 4, 0}
+	
+		c := make(chan int) //定义一个通道
+		go sum(s[:len(s)/2], c)
+		go sum(s[len(s)/2:], c)
+		//x, y := <-c, <-c // 从通道 c 中接收数据
+		x := <-c
+		y := <-c
+		fmt.Println(x, y, x+y)
+	}
+	```
+	
+2. 通道缓存区: c := make(chan int, 10),缓存区为10，若不指定缓存区，则必须写一个读一个，否则会堵塞
