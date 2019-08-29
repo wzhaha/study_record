@@ -188,6 +188,48 @@
 	}
 	```
 
+4. 匿名字段:  当我们创建结构体时，字段可以**只有类型，而没有字段名**。
+
+	```
+	type Person struct {  
+	    string
+	    int
+	}
+	
+	func main() {  
+	    var p1 Person
+	    p1.string = "naveen"
+	    p1.int = 50
+	    fmt.Println(p1)
+	}
+	```
+	
+5. 嵌套结构体
+
+	```
+	type Address struct {  
+	    city, state string
+	}
+	type Person struct {  
+	    name string
+	    age int
+	    address Address
+	}
+	
+	func main() {  
+	    var p Person
+	    p.name = "Naveen"
+	    p.age = 50
+	    p.address = Address {
+	        city: "Chicago",
+	        state: "Illinois",
+	    }
+	    fmt.Println("Name:", p.name)
+	    fmt.Println("Age:",p.age)
+	    fmt.Println("City:",p.address.city)
+	    fmt.Println("State:",p.address.state)
+	}
+	```
 ## 切片
 1. 定义
 
@@ -343,3 +385,29 @@
 	```
 	
 2. 通道缓存区: c := make(chan int, 10),缓存区为10，若不指定缓存区，则必须写一个读一个，否则会堵塞
+
+
+## 其他问题
+1. 切片是引用类型，被多个变量引用时改变一个都会变
+2. map是引用类型
+3. string中输出每个字符时，注意占位问题，遇到占位两个字节的编码会出问题。，可以使用**==rune==**解决这个问题
+> rune 是 Go 语言的内建类型，它也是 int32 的别称。在 Go 语言中，rune 表示一个代码点。代码点无论占用多少个字节，都可以用一个 rune 来表示
+
+	```
+	func printChars(s string) {
+	    runes := []rune(s)
+	    for i:= 0; i < len(runes); i++ {
+	        fmt.Printf("%c ",runes[i])
+	    }
+	}
+	
+	func main() {
+	    name := "Hello World"
+	    printChars(name)
+	    name = "Señor"
+	    printChars(name)
+	}
+	```
+
+4. Go 中的字符串是不可变的。一旦一个字符串被创建，那么它将无法被修改,是指不能修改比如 string[i],但是可以修改整个string
+5. 结构体是值类型
