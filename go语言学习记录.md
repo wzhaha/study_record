@@ -230,6 +230,7 @@
 	    fmt.Println("State:",p.address.state)
 	}
 	```
+
 ## 切片
 1. 定义
 
@@ -254,7 +255,7 @@
 	copy(numbers1,numbers)
 	printSlice(numbers1)
 	```
-	
+
 ## Map集合
 1. 定义
 
@@ -294,7 +295,7 @@
     }
 	```
 	
-## 接口(interface)
+## [接口(interface)](https://studygolang.com/articles/12266)
 1. example
 
 	```
@@ -335,6 +336,26 @@
 	```
 	
 2. 多态的实现(方法接受参数是一个接口类型，多个结构体实现了接口)
+3. 类型选择（Type Switch）
+
+	```
+	//此处是一个空接口，空接口表示为 interface{}
+	func findType(i interface{}) {  
+	    switch i.(type) {
+	    case string:
+	        fmt.Printf("I am a string and my value is %s\n", i.(string))
+	    case int:
+	        fmt.Printf("I am an int and my value is %d\n", i.(int))
+	    default:
+	        fmt.Printf("Unknown type\n")
+	    }
+	}
+	func main() {  
+	    findType("Naveen")
+	    findType(77)
+	    findType(89.98)
+	}
+	```
 
 ## 错误处理
 1. example
@@ -386,6 +407,23 @@
 	
 2. 通道缓存区: c := make(chan int, 10),缓存区为10，若不指定缓存区，则必须写一个读一个，否则会堵塞
 
+## 信道
+1. 缓冲信道 指定缓存区大小，范围内不会阻塞
+
+	```
+	func main() {  
+	    ch := make(chan string, 3)
+	    ch <- "naveen"
+	    ch <- "paul"
+	    fmt.Println("capacity is", cap(ch))
+	    fmt.Println("length is", len(ch))
+	    fmt.Println("read value", <-ch)
+	    fmt.Println("new length is", len(ch))
+	}
+	```
+
+## 工作池
+
 
 ## 其他问题
 1. 切片是引用类型，被多个变量引用时改变一个都会变
@@ -411,3 +449,8 @@
 
 4. Go 中的字符串是不可变的。一旦一个字符串被创建，那么它将无法被修改,是指不能修改比如 string[i],但是可以修改整个string
 5. 结构体是值类型
+6. 方法与函数不同，函数是一个可以随意调用的函数，方法是指定类型调用(类似于java中的类的方法)
+7. [方法调用](https://studygolang.com/articles/12264)：使用值接受者声明的方法，既可以用值来调用，也能用指针调用。**不管是一个值，还是一个可以解引用的指针，调用这样的方法都是合法的。**对于使用指针接受者的方法，**用一个指针或者一个可取得地址的值来调用**([特殊案例](https://studygolang.com/articles/12325))都是合法的。
+8. **==并发==与并行**(go是并发式语言)
+	* 并发是指**立即处理多个任务**的能力
+	* 并行是指**同时处理多个任务**
